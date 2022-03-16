@@ -1,4 +1,4 @@
-modules.exports = {
+module.exports = {
 
 	handle: (bot, msg) => {
 		const chatId = msg.chat.id;
