@@ -35,12 +35,49 @@ function handleCallbackQuery(bot, msg, user){
 			user.state = 'ENTER_EMAIL';
 			break;
 		case 'GO_TO_FIRST_PAGE':
+			user.current_domain_page = 1;
+
+			var inline_keyboard = generateDomainsMarkup(user);			
+			bot.editMessageText("Select Domain - ", {
+				reply_markup: '{ "inline_keyboard": '+ JSON.stringify(inline_keyboard) + ' }',
+				chat_id: chatId,
+				message_id: msg.message.message_id
+			});
 			break;
 		case 'GO_TO_PREV_PAGE':
+			user.current_domain_page = (user.current_domain_page - 1) <= 1 ? 1 : (user.current_domain_page - 1);
+
+
+			var inline_keyboard = generateDomainsMarkup(user);			
+			bot.editMessageText("Select Domain - ", {
+				reply_markup: '{ "inline_keyboard": '+ JSON.stringify(inline_keyboard) + ' }',
+				chat_id: chatId,
+				message_id: msg.message.message_id
+			});
 			break;
 		case 'GO_TO_NEXT_PAGE':
+			var totalPages = Math.ceil(global.msgsuite_ng_config.domains.length / 10);
+			user.current_domain_page = (user.current_domain_page + 1) >= totalPages ? totalPages : (user.current_domain_page + 1);
+
+
+			var inline_keyboard = generateDomainsMarkup(user);			
+			bot.editMessageText("Select Domain - ", {
+				reply_markup: '{ "inline_keyboard": '+ JSON.stringify(inline_keyboard) + ' }',
+				chat_id: chatId,
+				message_id: msg.message.message_id
+			});
 			break;
 		case 'GO_TO_LAST_PAGE':
+			var totalPages = Math.ceil(global.msgsuite_ng_config.domains.length / 10);
+			user.current_domain_page = totalPages;
+
+
+			var inline_keyboard = generateDomainsMarkup(user);			
+			bot.editMessageText("Select Domain - ", {
+				reply_markup: '{ "inline_keyboard": '+ JSON.stringify(inline_keyboard) + ' }',
+				chat_id: chatId,
+				message_id: msg.message.message_id
+			});
 			break;
 
 
@@ -119,16 +156,27 @@ function generateDomainsPage(pageNo){
 	pageNo = pageNo - 1; // To make the code easy to read, pages and domain indices start from 1
 	var domains = global.msgsuite_ng_config.domains;
 	var currentPageLength = Math.min(domains.length - (pageNo * 10), 10);
-	var emoji_numbers = ["0⃣", "1⃣", "2⃣", "3⃣", "4⃣", "5⃣", "6⃣", "7⃣", "8⃣", "9⃣", "🔟"];
+	
 
 	var pageArr = [[{"text": "🎲 Random", "callback_data": "SELECTED_DOMAIN_RANDOM"}]];
 	for(i=0; i<currentPageLength; i++){
 		var domainIndex = pageNo*10 + i;
 		var domain = domains[domainIndex];
 		pageArr.push([
-			{"text": emoji_numbers[domainIndex+1] + " " + domain.name, "callback_data": "SELECTED_DOMAIN_" + (domainIndex+1)}
+			{"text": (domainIndex+1) + ". " + domain.name, "callback_data": "SELECTED_DOMAIN_" + (domainIndex+1)}
 		]);
 	}
 
 	return pageArr;
+}
+
+function getEmojiNumber(number){
+	var emoji_numbers = ["0⃣", "1⃣", "2⃣", "3⃣", "4⃣", "5⃣", "6⃣", "7⃣", "8⃣", "9⃣", "🔟"];
+	var nStr = number + "";
+	var numberEmoji = "";
+	for(let i in nStr){
+		numberEmoji += emoji_numbers[nStr[i]];
+	}
+
+	return numberEmoji;
 }

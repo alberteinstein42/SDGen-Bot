@@ -9,8 +9,8 @@ const botController = require("./src/bot-controller");
 //Loading Configuration from Config Vars/Environment Variables
 const PORT = process.env.PORT || 80;
 const token = process.env.BOT_TOKEN;
-var msgsuite_ng_config = JSON.parse(process.env.MSGSUITE_NG_CONFIG);
-if(!msgsuite_ng_config){ console.log("Error loading MSGSUITE_NG_CONFIG, make sure the Config Var is properly set."); process.exit(1); }
+var msgsuite_ng_config = require("./config");
+if(!msgsuite_ng_config){ console.log("Error loading MSGSUITE_NG_CONFIG, make sure the config.js file is made."); process.exit(1); }
 
 
 
