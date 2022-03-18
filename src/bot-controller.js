@@ -1,3 +1,5 @@
+const tdController = require("./td-controller");
+
 module.exports = {
 
 	message: (bot, msg) => {
@@ -26,8 +28,17 @@ function handleCallbackQuery(bot, msg, user){
 	const chatId = msg.message.chat.id;
 
 	switch(msg.data){
+		case 'CANCEL':
+			bot.editMessageText("Have a good day!", {
+				message_id: msg.message.message_id,
+				chat_id: chatId
+			});
+			user = global.user_init;
+			break;
 		case 'ENTER_EMAIL':
+			var cancel_button = [[{"text": "❌ Cancel", "callback_data": "CANCEL"}]];
 			bot.editMessageText("Email Address? -", {
+				reply_markup: '{ "inline_keyboard": '+ JSON.stringify(cancel_button) + ' }',
 				message_id: msg.message.message_id,
 				chat_id: chatId
 			});
@@ -88,11 +99,15 @@ function handleCallbackQuery(bot, msg, user){
 	//Handling the dynamic SELECTED_DOMAIN_XX separately
 	if(msg.data.startsWith("SELECTED_DOMAIN_")){
 		var selectedDomain = msg.data.split("SELECTED_DOMAIN_")[1];
-		bot.editMessageText("Processing your request to create TD on Domain #" + selectedDomain, {
-			message_id: msg.message.message_id,
-			chat_id: chatId
-		});
+		var domain = global.msgsuite_ng_config.domains[selectedDomain - 1];
+		tdController.processTDRequest(bot, msg, user, domain);
+		clearData(user);
 	}
+}
+
+//Clear user data on successful creation of TD
+function clearData(user){
+	user = global.user_init;
 }
 
 function validateEmail(emailAdress){
@@ -109,13 +124,19 @@ function handleMessage(bot, msg, user){
 
 	switch(user.state){
 		case 'ENTER_EMAIL':
-			if(!validateEmail(msg.text.trim())){
-				bot.sendMessage(chatId, "Invalid Email Address, please provide a valid email. - ");	
+			var cancel_button = [[{"text": "❌ Cancel", "callback_data": "CANCEL"}]]; 
+			
+			if(!validateEmail(msg.text.trim())){	
+				bot.sendMessage(chatId, "Invalid Email Address, please provide a valid email. - ", {
+					reply_markup: '{ "inline_keyboard": '+ JSON.stringify(cancel_button) + ' }'
+				});	
 				break;
 			}
 			user.state = "ENTER_TD_NAME";
 			user.data.email = msg.text.trim();
-			bot.sendMessage(chatId, "Drive Name? - ");
+			bot.sendMessage(chatId, "Drive Name? - ", {
+				reply_markup: '{ "inline_keyboard": '+ JSON.stringify(cancel_button) + ' }'
+			});
 			break;
 
 		case 'ENTER_TD_NAME':

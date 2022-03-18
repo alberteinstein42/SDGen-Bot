@@ -16,6 +16,7 @@
     "express": "^4.17.3",
     "helmet": "^5.0.2",
     "morgan": "^1.10.0",
+    "node-fetch": "^2.6.7",
     "node-telegram-bot-api": "^0.56.0"
   },
   "devDependencies": {

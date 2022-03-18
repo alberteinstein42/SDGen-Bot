@@ -50,5 +50,9 @@ bot.on('message', (msg) => {
 
 
 bot.on('callback_query', (msg) => {
-    botController.callback_query(bot, msg);
+    try{
+        botController.callback_query(bot, msg);
+    }catch(e){
+        console.error(e);
+    }
 });
