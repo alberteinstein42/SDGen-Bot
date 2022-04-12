@@ -38,13 +38,14 @@ module.exports = {
 			}
 		}
 
+		user.tds_after_cutoff = tds_after_cutoff;
+
 		if(tds_after_cutoff >= TD_DYNAMIC_QUOTA.TDS + user.admin_td_grant){
 			user.first_td_after_cutoff = first_td_after_cutoff;
-			user.tds_after_cutoff = tds_after_cutoff;
+			
 			return true;
 		}
 
-		user.tds_after_cutoff = tds_after_cutoff;
 		return false;
 	}
 };
