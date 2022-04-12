@@ -594,19 +594,19 @@ async function showUserManageOptions(bot, msg, user, user_id, from_callback_quer
 	var quotaExhausted = quotaController.tdQuotaExhausted(user_object);
 
 	if(MAX_TD_PER_USER != -1){
-		user_info += `${user.drives.length}/${MAX_TD_PER_USER} TDs created.`;
+		user_info += `${user_object.drives.length}/${MAX_TD_PER_USER} TDs created.`;
 	}else{
-		user_info += `${user.tds_after_cutoff}/${TD_DYNAMIC_QUOTA.TDS} TDs created in last ${TD_DYNAMIC_QUOTA.DAYS} days.\n`;
+		user_info += `${user_object.tds_after_cutoff}/${TD_DYNAMIC_QUOTA.TDS} TDs created in last ${TD_DYNAMIC_QUOTA.DAYS} days.\n`;
 	}
-	if(quotaExhausted && user.first_td_after_cutoff){
-		var quota_cycle_next_date =  user.first_td_after_cutoff.date.addDays(TD_DYNAMIC_QUOTA.DAYS);
+	if(quotaExhausted && user_object.first_td_after_cutoff){
+		var quota_cycle_next_date =  user_object.first_td_after_cutoff.date.addDays(TD_DYNAMIC_QUOTA.DAYS);
 		user_info += `--Next TD after: ` + dateDiffString(quota_cycle_next_date, new Date()) + "\n";
 	}
 
-	user_info += `--Admin TD Grant: ${user.admin_td_grant}`;
+	user_info += `--Admin TD Grant: ${user_object.admin_td_grant}`;
 	
-	delete user.first_td_after_cutoff;
-	delete user.tds_after_cutoff;
+	delete user_object.first_td_after_cutoff;
+	delete user_object.tds_after_cutoff;
 
 	if(from_callback_query){
 		const chatId = msg.message.chat.id;
