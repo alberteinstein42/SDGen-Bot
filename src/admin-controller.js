@@ -598,7 +598,7 @@ async function showUserManageOptions(bot, msg, user, user_id, from_callback_quer
 	}else{
 		user_info += `${user.tds_after_cutoff}/${TD_DYNAMIC_QUOTA.TDS} TDs created in last ${TD_DYNAMIC_QUOTA.DAYS} days.\n`;
 	}
-	if(quotaExhausted){
+	if(quotaExhausted && user.first_td_after_cutoff){
 		var quota_cycle_next_date =  user.first_td_after_cutoff.date.addDays(TD_DYNAMIC_QUOTA.DAYS);
 		user_info += `--Next TD after: ` + dateDiffString(quota_cycle_next_date, new Date()) + "\n";
 	}
