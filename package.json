@@ -1,0 +1,38 @@
+{
+  "name": "SDGen-Bot",
+  "version": "0.0.1",
+  "description": "Telegram Bot to generate TD",
+  "engines": {
+    "node": "16.x"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.5",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.7",
+    "node-telegram-bot-api": "^0.56.0"
+  },
+  "devDependencies": {
+    "got": "^11.3.0",
+    "tape": "^4.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alberteinstein42/MsGSuite-Bot"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express",
+    "SDGen",
+    "Bot"
+  ],
+  "license": "MIT"
+}
