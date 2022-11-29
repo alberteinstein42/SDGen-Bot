@@ -211,6 +211,9 @@ async function handleCallbackQuery(bot, msg, user){
 			domain = findDomainById(selectedDomain);
 		}
 		
+		//Handling undefined domain upon domain getting offline mid-request
+		if(!domain) { domain = db_domains[0]; }
+		
 
 		var tds_with_domain = hasAlreadyTDWithThisDomain(domain, user.drives);
 		if(!msg.data.startsWith("FORCE_SELECTED_DOMAIN_") && tds_with_domain){
