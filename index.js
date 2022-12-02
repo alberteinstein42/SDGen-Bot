@@ -48,6 +48,7 @@ bot.on('callback_query', async (msg) => {
     try{
         await botController.callback_query(bot, msg);
     }catch(ex){
+        if(ex.message.includes("message is not modified")) { return; }
         console.error(ex);
     }
 });
